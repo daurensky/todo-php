@@ -32,9 +32,15 @@ class TaskController extends Controller
             return redirect('/login');
         }
 
+        $taskIds = array_keys($_POST['tasks']);
+        $taskPlaceholders = implode(',', array_map(fn() => '?', $taskIds));
+
         $tasks = Task::query()
             ->select(['id', 'text'])
-            ->where('id IN (?)', [implode(',', array_keys($_POST['tasks']))])
+            ->where(
+                'id IN (' . $taskPlaceholders . ')',
+                $taskIds,
+            )
             ->get();
 
         $taskTextById = [];
