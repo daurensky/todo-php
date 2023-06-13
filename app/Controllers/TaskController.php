@@ -39,13 +39,16 @@ class TaskController extends Controller
         $isValid = self::validate($_POST, [
             'user_name' => fn($value) => [
                 [(bool)$value, 'Обязательное поле'],
+                [strlen($value) <= 30, 'Слишком длинное имя'],
             ],
             'email'     => fn($value) => [
                 [(bool)$value, 'Обязательное поле'],
                 [filter_var($value, FILTER_VALIDATE_EMAIL), 'Неверный формат'],
+                [strlen($value) <= 255, 'Слишком длинная почта'],
             ],
             'text'      => fn($value) => [
                 [(bool)$value, 'Обязательное поле'],
+                [strlen($value) <= 1000, 'Слишкмо длинный текст'],
             ],
         ]);
 
